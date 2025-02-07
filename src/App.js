@@ -4,6 +4,8 @@ function App() {
   const [tasks, setTasks] = useState([]); // 할 일 목록
   const [task, setTask] = useState(""); // 새로운 할 일 입력
   const [deadline, setDeadline] = useState(""); // 마감 기한 입력
+  const [editingId, setEditingId] = useState(null); // 현재 수정 중인 할 일 ID
+  const [editText, setEditText] = useState(""); // 수정 중인 텍스트
 
   // ✅ 할 일 추가
   const addTask = () => {
@@ -20,9 +22,7 @@ function App() {
 
   // ✅ 할 일 완료 체크 (완료/미완료 토글)
   const toggleComplete = (id) => {
-    setTasks(
-      tasks.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t))
-    );
+    setTasks(tasks.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)));
   };
 
   // ✅ 남은 시간 계산 (마감 기한 - 현재 시간)
@@ -49,6 +49,23 @@ function App() {
 
   // ✅ 마감 시간이 가까울수록 정렬 (가까운 마감일이 위로)
   const sortedTasks = [...tasks].sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+
+  // ✅ 수정 버튼 클릭 시 해당 할 일 수정 모드 활성화
+  const startEditing = (id, text) => {
+    setEditingId(id);
+    setEditText(text);
+  };
+
+  // ✅ 수정할 내용 입력 핸들러
+  const handleEditChange = (e) => {
+    setEditText(e.target.value);
+  };
+
+  // ✅ 수정 완료 (Enter 키 또는 버튼 클릭)
+  const saveEdit = (id) => {
+    setTasks(tasks.map((t) => (t.id === id ? { ...t, text: editText } : t)));
+    setEditingId(null); // 수정 모드 해제
+  };
 
   return (
     <div style={styles.container}>
@@ -82,11 +99,27 @@ function App() {
           return (
             <li key={t.id} style={{ ...styles.taskItem, ...getDeadlineStyle(t.deadline) }}>
               <input type="checkbox" checked={t.completed} onChange={() => toggleComplete(t.id)} />
-              <span style={t.completed ? styles.completedTask : {}}>{t.text}</span>
-              <span>{timeLeft}</span>
-              <button onClick={() => deleteTask(t.id)} style={styles.deleteButton}>
-                삭제
-              </button>
+
+              {/* ✅ 수정 모드 */}
+              {editingId === t.id ? (
+                <>
+                  <input
+                    type="text"
+                    value={editText}
+                    onChange={handleEditChange}
+                    onKeyDown={(e) => e.key === "Enter" && saveEdit(t.id)}
+                    style={styles.editInput}
+                  />
+                  <button onClick={() => saveEdit(t.id)} style={styles.saveButton}>✔</button>
+                </>
+              ) : (
+                <>
+                  <span style={t.completed ? styles.completedTask : {}}>{t.text}</span>
+                  <span>{timeLeft}</span>
+                  <button onClick={() => startEditing(t.id, t.text)} style={styles.editButton}>✏</button>
+                  <button onClick={() => deleteTask(t.id)} style={styles.deleteButton}>🗑</button>
+                </>
+              )}
             </li>
           );
         })}
@@ -101,69 +134,25 @@ const getDeadlineStyle = (deadline) => {
   const due = new Date(deadline);
   const diff = due - now;
 
-  if (diff <= 0) return { color: "gray", fontWeight: "bold" }; // 마감됨
-  if (diff <= 3600000) return { color: "red", fontWeight: "bold" }; // 🔴 1시간 이하
-  if (diff <= 21600000) return { color: "orange", fontWeight: "bold" }; // 🟡 6시간 이하
-  return { color: "green", fontWeight: "bold" }; // 🟢 24시간 이상 남음
+  if (diff <= 0) return { color: "gray", fontWeight: "bold" };
+  if (diff <= 3600000) return { color: "red", fontWeight: "bold" };
+  if (diff <= 21600000) return { color: "orange", fontWeight: "bold" };
+  return { color: "green", fontWeight: "bold" };
 };
 
 const styles = {
-  container: {
-    maxWidth: "400px",
-    margin: "50px auto",
-    padding: "20px",
-    border: "1px solid #ddd",
-    borderRadius: "8px",
-    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-    textAlign: "center",
-  },
-  title: {
-    fontSize: "24px",
-    marginBottom: "20px",
-  },
-  inputContainer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-    marginBottom: "20px",
-  },
-  input: {
-    padding: "10px",
-    fontSize: "16px",
-    border: "1px solid #ddd",
-    borderRadius: "4px",
-  },
-  addButton: {
-    padding: "10px",
-    backgroundColor: "#007BFF",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-  taskList: {
-    listStyle: "none",
-    padding: "0",
-  },
-  taskItem: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "10px",
-    borderBottom: "1px solid #eee",
-  },
-  completedTask: {
-    textDecoration: "line-through",
-    color: "gray",
-  },
-  deleteButton: {
-    padding: "5px 10px",
-    backgroundColor: "#FF4136",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
+  container: { maxWidth: "400px", margin: "50px auto", padding: "20px", textAlign: "center" },
+  title: { fontSize: "24px", marginBottom: "20px" },
+  inputContainer: { display: "flex", flexDirection: "column", gap: "10px", marginBottom: "20px" },
+  input: { padding: "10px", fontSize: "16px", border: "1px solid #ddd", borderRadius: "4px" },
+  addButton: { padding: "10px", backgroundColor: "#007BFF", color: "white", borderRadius: "4px", cursor: "pointer" },
+  taskList: { listStyle: "none", padding: "0" },
+  taskItem: { display: "flex", alignItems: "center", padding: "10px", borderBottom: "1px solid #eee" },
+  completedTask: { textDecoration: "line-through", color: "gray" },
+  deleteButton: { marginLeft: "5px", backgroundColor: "#FF4136", color: "white", borderRadius: "4px", cursor: "pointer" },
+  editButton: { marginLeft: "5px", backgroundColor: "#FFC107", color: "black", borderRadius: "4px", cursor: "pointer" },
+  saveButton: { backgroundColor: "#28A745", color: "white", borderRadius: "4px", cursor: "pointer" },
+  editInput: { padding: "5px", fontSize: "16px", border: "1px solid #ddd", borderRadius: "4px" },
 };
 
 export default App;
