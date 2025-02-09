@@ -97,8 +97,8 @@ function App() {
           const timeLeft = calculateTimeLeft(t.deadline);
 
           return (
-            <li key={t.id} style={{ ...styles.taskItem, ...getDeadlineStyle(t.deadline) }}>
-              <input type="checkbox" checked={t.completed} onChange={() => toggleComplete(t.id)} />
+            <li key={t.id} style={{ ...styles.taskItem, ...getDeadlineStyle(t.deadline)}}>
+              <input type="checkbox"  checked={t.completed} onChange={() => toggleComplete(t.id)} />
 
               {/* ✅ 수정 모드 */}
               {editingId === t.id ? (
@@ -110,14 +110,16 @@ function App() {
                     onKeyDown={(e) => e.key === "Enter" && saveEdit(t.id)}
                     style={styles.editInput}
                   />
-                  <button onClick={() => saveEdit(t.id)} style={styles.saveButton}>✔</button>
+                  <button onClick={() => saveEdit(t.id)} style={styles.saveButton}>✔️</button>
                 </>
               ) : (
                 <>
-                  <span style={t.completed ? styles.completedTask : {}}>{t.text}</span>
-                  <span>{timeLeft}</span>
-                  <button onClick={() => startEditing(t.id, t.text)} style={styles.editButton}>✏</button>
-                  <button onClick={() => deleteTask(t.id)} style={styles.deleteButton}>🗑</button>
+                  <span style={t.completed ? styles.completedTask : {} }>{t.text}</span>
+                  <span >{timeLeft}</span>
+                  <div>
+                  <button onClick={() => startEditing(t.id, t.text)} style={styles.editButton}>✏️</button>
+                  <button onClick={() => deleteTask(t.id)} style={styles.deleteButton}>🗑️</button>
+                  </div>
                 </>
               )}
             </li>
@@ -136,22 +138,22 @@ const getDeadlineStyle = (deadline) => {
 
   if (diff <= 0) return { color: "gray", fontWeight: "bold" };
   if (diff <= 3600000) return { color: "red", fontWeight: "bold" };
-  if (diff <= 21600000) return { color: "orange", fontWeight: "bold" };
-  return { color: "green", fontWeight: "bold" };
+  if (diff <= 21600000) return { color: "#FF927C", fontWeight: "bold" };
+  return { color: "#4773EC", fontWeight: "bold" };
 };
 
 const styles = {
   container: { maxWidth: "400px", margin: "50px auto", padding: "20px", textAlign: "center" },
-  title: { fontSize: "24px", marginBottom: "20px" },
+  title: { fontSize: "24px", marginBottom: "20px", color: "#4773EC" },
   inputContainer: { display: "flex", flexDirection: "column", gap: "10px", marginBottom: "20px" },
   input: { padding: "10px", fontSize: "16px", border: "1px solid #ddd", borderRadius: "4px" },
-  addButton: { padding: "10px", backgroundColor: "#007BFF", color: "white", borderRadius: "4px", cursor: "pointer" },
+  addButton: { padding: "10px", backgroundColor: "#A7ABE2", color: "black", border: "none",  borderRadius: "4px", cursor: "pointer" },
   taskList: { listStyle: "none", padding: "0" },
-  taskItem: { display: "flex", alignItems: "center", padding: "10px", borderBottom: "1px solid #eee" },
-  completedTask: { textDecoration: "line-through", color: "gray" },
-  deleteButton: { marginLeft: "5px", backgroundColor: "#FF4136", color: "white", borderRadius: "4px", cursor: "pointer" },
-  editButton: { marginLeft: "5px", backgroundColor: "#FFC107", color: "black", borderRadius: "4px", cursor: "pointer" },
-  saveButton: { backgroundColor: "#28A745", color: "white", borderRadius: "4px", cursor: "pointer" },
+  taskItem: {  display: "flex",  justifyContent: "space-between", padding: "10px", borderBottom: "1px solid #eee" },
+  completedTask: { textDecoration: "line-through", color: "gray"},
+  deleteButton: {  marginLeft: "10px", color: "white", border: "none", borderRadius: "4px", cursor: "pointer"},
+  editButton: { color: "black", border: "none", borderRadius: "4px", cursor: "pointer"},
+  saveButton: { border: "none", color: "white", borderRadius: "4px", cursor: "pointer" },
   editInput: { padding: "5px", fontSize: "16px", border: "1px solid #ddd", borderRadius: "4px" },
 };
 
