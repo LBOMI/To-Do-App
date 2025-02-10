@@ -11,7 +11,10 @@ const TaskInput = ({ addTask }) => {
     setDeadline("");
   };
 
+  
+
   return (
+    
     <div style={styles.inputContainer}>
       <input type="text" value={task} onChange={(e) => setTask(e.target.value)} placeholder="할 일을 입력하세요" style={styles.input} />
       <input type="datetime-local" value={deadline} onChange={(e) => setDeadline(e.target.value)} style={styles.input} />
