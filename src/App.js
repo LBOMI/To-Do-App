@@ -31,7 +31,7 @@ function App() {
 
   return (
     <div style={styles.container}>
-      <h1>To-Do App</h1>
+      <h1>To-Do App 📝</h1>
       <TaskInput addTask={addTask} />
       <TaskList tasks={tasks} toggleComplete={toggleComplete} startEditing={startEditing} deleteTask={deleteTask} editingId={editingId} editText={editText} handleEditChange={(e) => setEditText(e.target.value)} saveEdit={saveEdit} />
     </div>
