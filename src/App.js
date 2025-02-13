@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import TaskInput from "./components/TaskInput";
 import TaskList from "./components/TaskList";
+import { DragDropContext } from "react-beautiful-dnd";
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -29,12 +30,24 @@ function App() {
     setEditingId(null);
   };
 
+  const handleDragEnd = (result) => {
+    if (!result.destination) return; // 목적지가 없으면 종료
+
+    const reorderedTasks = Array.from(tasks);
+    const [movedTask] = reorderedTasks.splice(result.source.index, 1);
+    reorderedTasks.splice(result.destination.index, 0, movedTask);
+
+    setTasks(reorderedTasks);
+  };
+
   return (
+    <DragDropContext onDragEnd={handleDragEnd}>
     <div style={styles.container}>
       <h1>To-Do App 📝</h1>
       <TaskInput addTask={addTask} />
       <TaskList tasks={tasks} toggleComplete={toggleComplete} startEditing={startEditing} deleteTask={deleteTask} editingId={editingId} editText={editText} handleEditChange={(e) => setEditText(e.target.value)} saveEdit={saveEdit} />
     </div>
+    </DragDropContext>
   );
 }
 const styles = {

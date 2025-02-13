@@ -1,18 +1,26 @@
 import React from "react";
 import TaskItem from "./TaskItem";
+import { Droppable, Draggable } from "react-beautiful-dnd";
 
-const TaskList = ({ tasks, toggleComplete, startEditing, deleteTask, editingId, editText, handleEditChange, saveEdit }) => {
+const TaskList = ({ tasks, setTasks }) => {
   return (
-    <ul style={styles.taskList}>
-      {tasks.map((task) => (
-        <TaskItem key={task.id} task={task} toggleComplete={toggleComplete} startEditing={startEditing} deleteTask={deleteTask} editingId={editingId} editText={editText} handleEditChange={handleEditChange} saveEdit={saveEdit} />
-      ))}
-    </ul>
+    <Droppable droppableId="task-list">
+      {(provided) => (
+        <ul ref={provided.innerRef} {...provided.droppableProps} style={{ listStyle: "none", padding: "0" }}>
+          {tasks.map((task, index) => (
+            <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
+              {(provided) => (
+                <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                  <TaskItem task={task} />
+                </li>
+              )}
+            </Draggable>
+          ))}
+          {provided.placeholder}
+        </ul>
+      )}
+    </Droppable>
   );
-};
-
-const styles = {
-  taskList: { listStyle: "none", padding: "0" }
 };
 
 export default TaskList;
