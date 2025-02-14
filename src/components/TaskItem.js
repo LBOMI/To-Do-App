@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import getDeadlineStyle from "./DeadlineStyle";
+import styled from "styled-components";
 
 const TaskItem = ({ task, toggleComplete, startEditing, deleteTask, editingId, editText, handleEditChange, saveEdit }) => {
   const [timeLeft, setTimeLeft] = useState("");
@@ -30,34 +31,94 @@ const TaskItem = ({ task, toggleComplete, startEditing, deleteTask, editingId, e
   }, [task.deadline]);
 
   return (
-    <li key={task.id} style={{ ...styles.taskItem, ...getDeadlineStyle(task.deadline) }}>
+    <StyledTaskItem style={getDeadlineStyle(task.deadline)}>
       <input type="checkbox" checked={task.completed} onChange={() => toggleComplete(task.id)} />
+      
       {editingId === task.id ? (
         <>
-          <input type="text" value={editText} onChange={handleEditChange} onKeyDown={(e) => e.key === "Enter" && saveEdit(task.id)} style={styles.editInput} />
-          <button onClick={() => saveEdit(task.id)} style={styles.saveButton}>✔️</button>
+          <StyledEditInput 
+            type="text" 
+            value={editText} 
+            onChange={handleEditChange} 
+            onKeyDown={(e) => e.key === "Enter" && saveEdit(task.id)}
+          />
+          <StyledSaveButton onClick={() => saveEdit(task.id)}>✔️</StyledSaveButton>
         </>
       ) : (
         <>
-          <span style={task.completed ? styles.completedTask : {}}>{task.text}</span>
-          <span>{timeLeft}</span> {/* 실시간 업데이트되는 남은 시간 */}
-          <div>
-            <button onClick={() => startEditing(task.id, task.text)} style={styles.editButton}>✏️</button>
-            <button onClick={() => deleteTask(task.id)} style={styles.deleteButton}>🗑️</button>
-          </div>
+          <TaskText completed={task.completed}>{task.text}</TaskText>
+          <TimeLeft>{timeLeft}</TimeLeft>
+          <ButtonGroup>
+            <StyledEditButton onClick={() => startEditing(task.id, task.text)}>✏️</StyledEditButton>
+            <StyledDeleteButton onClick={() => deleteTask(task.id)}>🗑️</StyledDeleteButton>
+          </ButtonGroup>
         </>
       )}
-    </li>
+    </StyledTaskItem>
   );
 };
 
-const styles = {
-  taskItem: { display: "flex", justifyContent: "space-between",alignItems: "center", padding: "10px", borderBottom: "1px solid #eee", height: "30px" },
-  completedTask: { textDecoration: "line-through", color: "gray" },
-  deleteButton: { marginLeft: "10px", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" },
-  editButton: { color: "black", border: "none", borderRadius: "4px", cursor: "pointer" },
-  saveButton: { border: "none", color: "white", borderRadius: "4px", cursor: "pointer" },
-  editInput: { padding: "5px", fontSize: "16px", border: "1px solid #ddd", borderRadius: "4px" },
-};
+// ✅ `styled-components`로 스타일 적용
+const StyledTaskItem = styled.li`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  height: 40px;
+  background-color: #fff;
+  border-radius: 5px;
+  margin-bottom: 8px;
+`;
+
+const TaskText = styled.span`
+  text-decoration: ${(props) => (props.completed ? "line-through" : "none")};
+  color: ${(props) => (props.completed ? "gray" : "black")};
+`;
+
+const TimeLeft = styled.span`
+  font-size: 12px;
+  // color: #ff5733;
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: 5px;
+`;
+
+const StyledEditInput = styled.input`
+  padding: 5px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+`;
+
+const StyledSaveButton = styled.button`
+  border: none;
+  background-color: #2ecc71;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 5px;
+`;
+
+const StyledEditButton = styled.button`
+  background-color: #f1c40f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 5px;
+`;
+
+const StyledDeleteButton = styled.button`
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 5px;
+`;
+
 
 export default TaskItem;

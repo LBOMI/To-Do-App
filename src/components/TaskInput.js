@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styled from "styled-components";
 
 const TaskInput = ({ addTask }) => {
   const [task, setTask] = useState("");
@@ -13,18 +14,35 @@ const TaskInput = ({ addTask }) => {
 
   
   return (
-    
-    <div style={styles.inputContainer}>
-      <input type="text" value={task} onChange={(e) => setTask(e.target.value)} placeholder="할 일을 입력하세요" style={styles.input} />
-      <input type="datetime-local" value={deadline} onChange={(e) => setDeadline(e.target.value)} style={styles.input} />
-      <button onClick={handleSubmit} style={styles.addButton}>추가</button>
-    </div>
+    <InputContainer>
+      <InputStyle type="text" value={task} onChange={(e) => setTask(e.target.value)} placeholder="할 일을 입력하세요" />
+      <InputStyle type="datetime-local" value={deadline} onChange={(e) => setDeadline(e.target.value)}/>
+      <AddButton onClick={handleSubmit}>추가</AddButton>
+    </InputContainer>
   );
 };
 
-const styles = {
-  inputContainer: { display: "flex", flexDirection: "column", gap: "10px", marginBottom: "20px" },
-  input: { padding: "10px", fontSize: "16px", border: "1px solid #ddd", borderRadius: "4px" },
-  addButton: { padding: "10px", backgroundColor: "#A7ABE2", color: "black", border: "none",  borderRadius: "4px", cursor: "pointer" }
-};
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+`;
+
+const InputStyle = styled.input`
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+`;
+
+const AddButton = styled.button`
+  padding: 10px;
+  background-color: #A7ABE2;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+`
+
 export default TaskInput;

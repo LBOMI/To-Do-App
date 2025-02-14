@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import TaskInput from "./components/TaskInput";
 import TaskList from "./components/TaskList";
 import { DragDropContext } from "react-beautiful-dnd";
+import styled from "styled-components";
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -42,7 +43,7 @@ function App() {
   };
 
   return (
-    <div style={styles.container}>
+    <StyledContainer>
       <h1>To-Do App 📝</h1>
       <TaskInput addTask={addTask} />
 
@@ -59,12 +60,18 @@ function App() {
           saveEdit={saveEdit} 
         />
       </DragDropContext>
-    </div>
+    </StyledContainer>
   );
 }
 
-const styles = {
-  container: { maxWidth: "400px", margin: "50px auto", padding: "20px", textAlign: "center" }
-};
+const StyledContainer = styled.div`
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);  
+`;
 
 export default App;
