@@ -9,7 +9,7 @@ function App() {
   const [editText, setEditText] = useState("");
 
   const addTask = (text, deadline) => {
-    setTasks([...tasks, { id: Date.now(), text, deadline, completed: false }]);
+    setTasks([...tasks, { id: Date.now().toString(), text, deadline, completed: false }]); // 🔥 `id`를 문자열로 변환 (Draggable 오류 방지)
   };
 
   const deleteTask = (id) => {
@@ -30,8 +30,9 @@ function App() {
     setEditingId(null);
   };
 
+  // ✅ Drag & Drop 핸들러 추가
   const handleDragEnd = (result) => {
-    if (!result.destination) return; // 목적지가 없으면 종료
+    if (!result.destination) return; // 🔥 목적지가 없으면 아무것도 하지 않음
 
     const reorderedTasks = Array.from(tasks);
     const [movedTask] = reorderedTasks.splice(result.source.index, 1);
@@ -41,15 +42,27 @@ function App() {
   };
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
     <div style={styles.container}>
       <h1>To-Do App 📝</h1>
       <TaskInput addTask={addTask} />
-      <TaskList tasks={tasks} toggleComplete={toggleComplete} startEditing={startEditing} deleteTask={deleteTask} editingId={editingId} editText={editText} handleEditChange={(e) => setEditText(e.target.value)} saveEdit={saveEdit} />
+
+      {/* ✅ DragDropContext로 감싸기 */}
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <TaskList 
+          tasks={tasks} 
+          toggleComplete={toggleComplete} 
+          startEditing={startEditing} 
+          deleteTask={deleteTask} 
+          editingId={editingId} 
+          editText={editText} 
+          handleEditChange={(e) => setEditText(e.target.value)} 
+          saveEdit={saveEdit} 
+        />
+      </DragDropContext>
     </div>
-    </DragDropContext>
   );
 }
+
 const styles = {
   container: { maxWidth: "400px", margin: "50px auto", padding: "20px", textAlign: "center" }
 };

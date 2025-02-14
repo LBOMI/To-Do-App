@@ -52,7 +52,7 @@ const TaskItem = ({ task, toggleComplete, startEditing, deleteTask, editingId, e
 };
 
 const styles = {
-  taskItem: { display: "flex", justifyContent: "space-between", padding: "10px", borderBottom: "1px solid #eee" },
+  taskItem: { display: "flex", justifyContent: "space-between",alignItems: "center", padding: "10px", borderBottom: "1px solid #eee", height: "30px" },
   completedTask: { textDecoration: "line-through", color: "gray" },
   deleteButton: { marginLeft: "10px", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" },
   editButton: { color: "black", border: "none", borderRadius: "4px", cursor: "pointer" },
