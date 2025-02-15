@@ -14,14 +14,29 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(() => {
+    const savedtasks = localStorage.getItem("tasks"); // 힐일 목록 로컬 스토리지 저장
+    return savedtasks ? JSON.parse(savedtasks) : []; // 데이터 없으면 빈 배열 반환환
+  });
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState("");
-  const [isDarkMode, setIsDarkMode] = useState(false); // 🔥 다크모드 상태 추가
+  const [isDarkMode, setIsDarkMode] = useState(() => { // 다크모드
+    return JSON.parse(localStorage.getItem("isDarkMode")) || false;
+  });  
+
+  // tasks 변경될 때마다 로컬 스토리지에 저장
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
 
   // ✅ 다크 모드 변경 시 body 배경 업데이트
   useEffect(() => {
     document.body.style.backgroundColor = isDarkMode ? darkTheme.background : lightTheme.background;
+  }, [isDarkMode]);
+
+  // 다크 모드 로컬 스토리지 저장장
+  useEffect(() => {
+    localStorage.setItem("isDarkMode", JSON.stringify(isDarkMode));
   }, [isDarkMode]);
 
 
