@@ -34,6 +34,7 @@ const InputStyle = styled.input`
   font-size: 16px;
   border: 1px solid #ddd;
   border-radius: 4px;
+  background-color:${(props) => props.theme.inputStage};
 `;
 
 const AddButton = styled.button`

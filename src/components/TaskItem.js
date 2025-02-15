@@ -64,20 +64,24 @@ const StyledTaskItem = styled.li`
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  border-bottom: 1px solid #eee;
+  // border-bottom: 1px solid #eee;
   height: 40px;
-  background-color: #fff;
-  border-radius: 5px;
+  background-color: ${(props) => props.theme.todoList};
+  border-radius: 10px;
+  // border: 1px solid #000000;
   margin-bottom: 8px;
+  font-size: 20px;
 `;
 
 const TaskText = styled.span`
   text-decoration: ${(props) => (props.completed ? "line-through" : "none")};
-  color: ${(props) => (props.completed ? "gray" : "black")};
+  text-decoration-color: #7A7A7A;
+  text-decoration-thickness: 3px;
+  color: ${(props) => props.theme.taskp};
 `;
 
 const TimeLeft = styled.span`
-  font-size: 12px;
+  font-size: 15px;
   // color: #ff5733;
 `;
 

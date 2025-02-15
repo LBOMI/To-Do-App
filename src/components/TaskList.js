@@ -49,7 +49,7 @@ const TaskList = ({ tasks, toggleComplete, startEditing, deleteTask, editingId, 
 const getDraggingStyle = (isDragging) => ({
   transform: isDragging ? "scale(1.05)" : "scale(1)",
   boxShadow: isDragging ? "0px 5px 15px rgba(0, 0, 0, 0.2)" : "none",
-  backgroundColor: isDragging ? "#d1f5ff" : "#fff",
+  backgroundColor: isDragging ? "#0000" : "#0000",
   transition: "all 0.2s ease",
 });
 
