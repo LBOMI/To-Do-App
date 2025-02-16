@@ -58,7 +58,7 @@ const TaskItem = ({ task, toggleComplete, startEditing, deleteTask, editingId, e
   );
 };
 
-// ✅ `styled-components`로 스타일 적용
+
 const StyledTaskItem = styled.li`
   display: flex;
   justify-content: space-between;
@@ -82,7 +82,6 @@ const TaskText = styled.span`
 
 const TimeLeft = styled.span`
   font-size: 15px;
-  // color: #ff5733;
 `;
 
 const ButtonGroup = styled.div`
