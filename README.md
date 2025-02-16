@@ -4,7 +4,7 @@
 
 ---
 ### 🎥 UI
-<img src="https://github.com/user-attachments/assets/87777fa2-2490-4995-8c57-1adb731af3ed" style="width: 450px"></img>
+<img src="https://github.com/user-attachments/assets/87777fa2-2490-4995-8c57-1adb731af3ed" style="width: 800px"></img>
 ---
 
 ### 🤍 주요 기능
