@@ -63,7 +63,7 @@
 
 #### 소스 코드 다운로드
 ```bash
-git clone https://github.com/your-username/todo-app.git
+git clone https://github.com/LBOMI/To-Do-App.git
 cd todo-app
 ```
 
